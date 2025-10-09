@@ -37,6 +37,7 @@ async function seed() {
     });
 
     // Diving Centers
+    await prisma.fishSighting.deleteMany({});
     await prisma.fish.deleteMany({});
 
     const fish = await prisma.fish.createManyAndReturn({

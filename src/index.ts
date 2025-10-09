@@ -1,10 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 import {getAllDivingCenters} from './services/divingCenterService';
 import {getAllFish, getFishById} from './services/fishService';
 import {startFishSightingUpdates} from './services/fishSightingService';
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/diving-centers', async (req, res) => {
