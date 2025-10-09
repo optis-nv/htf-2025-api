@@ -9,28 +9,28 @@ async function seed() {
         data: [
             {
                 "name": "Master Divers",
-                "locationLatitude": 10.0927,
-                "locationLongitude": 99.8366
+                "latitude": 10.0927,
+                "longitude": 99.8366
             },
             {
                 "name": "The Divers Boat",
-                "locationLatitude": 10.0987,
-                "locationLongitude": 99.8250
+                "latitude": 10.0987,
+                "longitude": 99.8250
             },
             {
                 "name": "IDC Koh Tao",
-                "locationLatitude": 10.1009,
-                "locationLongitude": 99.8263
+                "latitude": 10.1009,
+                "longitude": 99.8263
             },
             {
                 "name": "Sairee Cottage Diving",
-                "locationLatitude": 10.0981,
-                "locationLongitude": 99.8302
+                "latitude": 10.0981,
+                "longitude": 99.8302
             },
             {
                 "name": "Big Blue Diving",
-                "locationLatitude": 10.0965,
-                "locationLongitude": 99.8274
+                "latitude": 10.0965,
+                "longitude": 99.8274
             }
         ]
     });

@@ -12,14 +12,27 @@ datasource db {
 }
 
 model DivingCenter {
-  id                String @id @default(uuid())
-  name              String
-  locationLatitude  Float
-  locationLongitude Float
+  id        String        @id @default(uuid())
+  name      String
+  latitude  Float
+  longitude Float
+  sightings FishSighting[]
 }
 
 model Fish {
-  id    String  @id @default(uuid())
-  name  String
-  image String?
+  id        String         @id @default(uuid())
+  name      String
+  image     String?
+  sightings FishSighting[]
+}
+
+model FishSighting {
+  id             String       @id @default(uuid())
+  fishId         String
+  fish           Fish         @relation(fields: [fishId], references: [id])
+  divingCenterId String
+  divingCenter   DivingCenter @relation(fields: [divingCenterId], references: [id])
+  latitude       Float
+  longitude      Float
+  timestamp      DateTime     @default(now())
 }
