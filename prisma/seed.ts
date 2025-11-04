@@ -93,6 +93,11 @@ async function seed() {
                 "name": "Broadbanded Moray",
                 "image": "https://example.com/white_eyed_moray.jpg",
                 "rarity": FishRarity.RARE
+            },
+            {
+                "name": "Whale Shark",
+                "image": "https://example.com/whale_shark.jpg",
+                "rarity": FishRarity.EPIC
             }
         ]
     });

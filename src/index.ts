@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import {getAllDivingCenters} from './services/divingCenterService';
 import {getAllFish, getFishById} from './services/fishService';
-import {startFishSightingUpdates} from './services/fishSightingService';
 import {getAllTemperatureReadings} from "./services/temperatureReadingService";
+import {startFishSightingUpdates, startTemperatureSensorUpdates} from "./services/scheduledJobService";
 
 const app = express();
 
@@ -58,4 +58,5 @@ app.get('/api/temperatures', async (req, res) => {
 const server = app.listen(3000, () => {
     console.log("🤿 FishyDex available at http://localhost:3000");
     startFishSightingUpdates();
+    startTemperatureSensorUpdates();
 });
