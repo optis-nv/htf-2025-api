@@ -14,25 +14,70 @@ const prisma = new PrismaClient();
  * Retrieves all temperature sensors with their readings.
  *
  * Returns complete sensor information including location (latitude/longitude)
- * and all associated temperature readings with timestamps. This provides
- * a comprehensive view of the temperature monitoring system.
+ * and the latest temperature reading with timestamps.
  */
 export const getAllTemperatureReadings = async () => {
-    return prisma.temperatureSensor.findMany({
-        select: {
-            id: true,
-            latitude: true,
-            longitude: true,
+    const sensors = await prisma.temperatureSensor.findMany({
+        include: {
             readings: {
-                select: {
-                    id: true,
-                    temperature: true,
-                    timestamp: true
-                }
+                orderBy: {
+                    timestamp: 'desc'
+                },
+                take: 1
             }
         }
-    })
-}
+    });
+
+    return sensors.map(({readings, ...s}) => {
+        // Extract the single reading (if it exists)
+        const reading = readings[0];
+
+        // Return sensor data with latestReading instead of readings array
+        // This provides a more intuitive API structure for clients
+        return {
+            ...s,
+            lastReading: reading ? {
+                temperature: reading.temperature,
+                timestamp: reading.timestamp,
+            } : null  // null if sesnor has no reading
+        };
+    });
+};
+/**
+ * Retrieves a specific temperature sensor by ID with all its readings.
+ *
+ * This function fetches a single temperature sensor along with ALL of its readings
+ * (unlike getAllTemperatureReadings which only returns the latest reading). Reading data
+ * is filtered to only include temperature and timestamp information.
+ */
+export const getTemperatureReadingsForSensorId = async (id: string) => {
+    // Fetch the specific temperature sensor with all of its readings
+    const sensor = await prisma.temperatureSensor.findUnique({
+        where: {
+            id
+        },
+        include: {
+            readings: true
+        }
+    });
+
+    // Return null if temperature sensor doesn't exist
+    if (!sensor) {
+        return null;
+    }
+
+    // Transform sensor data to only include relevant fields
+    // This filters out internal database fields
+    // and provides a clean API response with only what clients need
+    return {
+        ...sensor,
+        readings: sensor.readings.map(reading => ({
+            temperature: reading.temperature,
+            timestamp: reading.timestamp
+        }))
+    };
+
+};
 
 /**
  * Updates temperature readings for all sensors with realistic variations.

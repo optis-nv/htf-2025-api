@@ -108,7 +108,8 @@ Fishy Dex API is a Node.js backend service built with Express.js that powers the
 
 ### Temperature Readings
 
-- `GET /api/temperatures` - Retrieve all temperature sensor readings
+- `GET /api/temperatures` - Retrieve all temperature sensor with the latest reading
+- `GET /api/temperatures/:id` - Retrieve a specific temperature sensor by ID with all its readings
 
 ## Core Features
 

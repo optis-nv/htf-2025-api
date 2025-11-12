@@ -11,7 +11,7 @@ import express from "express";
 import cors from "cors";
 import {getAllDivingCenters} from "./services/divingCenterService";
 import {getAllFish, getFishById} from "./services/fishService";
-import {getAllTemperatureReadings} from "./services/temperatureReadingService";
+import {getAllTemperatureReadings, getTemperatureReadingsForSensorId} from "./services/temperatureReadingService";
 import {startFishSightingUpdates, startTemperatureSensorUpdates,} from "./services/scheduledJobService";
 
 // Initialize Express application
@@ -88,6 +88,26 @@ app.get("/api/temperatures", async (req, res) => {
   } catch (error) {
     console.error("Error fetching temperatures:", error);
     res.status(500).json({ error: "Failed to fetch temperatures" });
+  }
+});
+/**
+ * GET /api/temperatures/:id
+ * Retrieves a specific temperature sensor by ID with all of its readings.
+ * Returns 404 if the temperature sensor doesn't exist.
+ * Unlike the /api/temperatures endpoint, this returns ALL readings for the temperature sensor,
+ * not just the most recent one.
+ */
+app.get("/api/temperatures/:id", async (req, res) => {
+  try {
+    const temperatureSensor = await getTemperatureReadingsForSensorId(req.params.id);
+    if (!temperatureSensor) {
+      res.status(404).json({error: "Temperature sensor not found"});
+      return;
+    }
+    res.json(temperatureSensor);
+  } catch (error) {
+    console.error("Error fetching temperature sensor by id:", error);
+    res.status(500).json({error: "Failed to fetch temperature sensor"});
   }
 });
 
